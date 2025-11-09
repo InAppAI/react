@@ -219,7 +219,7 @@ function Demo() {
 
             {/* Todo List */}
             <div style={{ background: 'white', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
-              <h3>📝 Todo List (AI can manage this!)</h3>
+              <h3 style={{ color: '#333', marginTop: 0 }}>📝 Todo List (AI can manage this!)</h3>
               <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '15px' }}>
                 💬 Try: "Add a task to buy milk" • "What's my completion rate?" • "I bought groceries" • "Make it high priority"
               </p>
@@ -306,9 +306,10 @@ function Demo() {
                         flex: 1,
                         textDecoration: todo.completed ? 'line-through' : 'none',
                         fontSize: '0.95rem',
+                        color: '#333',
                       }}
                     >
-                      {todo.text} <span style={{ fontSize: '0.75rem', color: '#999' }}>(ID: {todo.id})</span>
+                      {todo.text} <span style={{ fontSize: '0.75rem', color: '#666' }}>(ID: {todo.id})</span>
                     </span>
                     <span
                       style={{
@@ -339,7 +340,7 @@ function Demo() {
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '15px', padding: '12px', background: '#e7f3ff', borderRadius: '8px', fontSize: '0.9rem' }}>
+              <div style={{ marginTop: '15px', padding: '12px', background: '#e7f3ff', borderRadius: '8px', fontSize: '0.9rem', color: '#333' }}>
                 <strong>Stats:</strong> {todos.length} total, {activeTodos.length} active, {completedTodos.length} completed
               </div>
             </div>
@@ -520,7 +521,7 @@ function Demo() {
 
         {/* Todo List */}
         <div style={{ background: 'white', borderRadius: '12px', padding: '20px', marginBottom: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3>📝 Todo List (AI can manage this!)</h3>
+          <h3 style={{ color: '#333', marginTop: 0 }}>📝 Todo List (AI can manage this!)</h3>
           <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '15px' }}>
             💬 Try: "Add a task to buy milk" • "What's my completion rate?" • "I bought groceries" • "Make it high priority"
           </p>
@@ -607,9 +608,10 @@ function Demo() {
                     flex: 1,
                     textDecoration: todo.completed ? 'line-through' : 'none',
                     fontSize: '0.95rem',
+                    color: '#333',
                   }}
                 >
-                  {todo.text} <span style={{ fontSize: '0.75rem', color: '#999' }}>(ID: {todo.id})</span>
+                  {todo.text} <span style={{ fontSize: '0.75rem', color: '#666' }}>(ID: {todo.id})</span>
                 </span>
                 <span
                   style={{
@@ -640,7 +642,7 @@ function Demo() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop: '15px', padding: '12px', background: '#e7f3ff', borderRadius: '8px', fontSize: '0.9rem' }}>
+          <div style={{ marginTop: '15px', padding: '12px', background: '#e7f3ff', borderRadius: '8px', fontSize: '0.9rem', color: '#333' }}>
             <strong>Stats:</strong> {todos.length} total, {activeTodos.length} active, {completedTodos.length} completed
           </div>
         </div>
