@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { InAppAI } from './components/InAppAI-Enhanced';
-import type { Tool } from '@inapp-ai/core';
+import type { Tool } from 'inapp-ai-react';
 import { useKnowledgeBase } from './useKnowledgeBase';
 import { createDocumentationTools, createTodoTools } from './tools';
 import type { Todo } from './tools';

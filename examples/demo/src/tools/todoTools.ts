@@ -3,7 +3,7 @@
  * Tools for managing the todo list
  */
 
-import { Tool } from '@inapp-ai/core';
+import { Tool } from 'inapp-ai-react';
 
 export interface Todo {
   id: number;

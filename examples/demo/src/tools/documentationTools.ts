@@ -3,7 +3,7 @@
  * Tools for searching and listing InAppAI documentation
  */
 
-import { Tool } from '@inapp-ai/core';
+import { Tool } from 'inapp-ai-react';
 
 export interface DocumentationToolsParams {
   kbInitialized: boolean;
