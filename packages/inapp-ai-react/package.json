@@ -1,0 +1,63 @@
+{
+  "name": "@inappai/react",
+  "version": "0.1.0",
+  "description": "Beautiful, customizable AI chat component for React applications",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./styles.css": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "ai",
+    "react",
+    "chatbot",
+    "assistant",
+    "openai",
+    "anthropic",
+    "chat-ui",
+    "component"
+  ],
+  "author": "InAppAI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InAppAI/react.git",
+    "directory": "packages/inapp-ai-react"
+  },
+  "bugs": {
+    "url": "https://github.com/InAppAI/react/issues"
+  },
+  "homepage": "https://github.com/InAppAI/react#readme",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3"
+  }
+}
