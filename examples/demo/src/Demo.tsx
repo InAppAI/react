@@ -225,7 +225,7 @@ function Demo() {
               </p>
 
               {/* Manual Add Task */}
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '15px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '15px' }}>
                 <input
                   type="text"
                   value={newTaskText}
@@ -233,7 +233,8 @@ function Demo() {
                   onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
                   placeholder="Add a new task..."
                   style={{
-                    flex: 1,
+                    flex: '1 1 100%',
+                    minWidth: '200px',
                     padding: '10px 14px',
                     border: '2px solid #e0e0e0',
                     borderRadius: '8px',
@@ -245,6 +246,8 @@ function Demo() {
                   value={newTaskPriority}
                   onChange={(e) => setNewTaskPriority(e.target.value as 'low' | 'medium' | 'high')}
                   style={{
+                    flex: '1 1 auto',
+                    minWidth: '100px',
                     padding: '10px 14px',
                     border: '2px solid #e0e0e0',
                     borderRadius: '8px',
@@ -261,6 +264,8 @@ function Demo() {
                 <button
                   onClick={handleAddTodo}
                   style={{
+                    flex: '1 1 auto',
+                    minWidth: '100px',
                     padding: '10px 20px',
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     color: 'white',
@@ -521,7 +526,7 @@ function Demo() {
           </p>
 
           {/* Manual Add Task */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '15px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '15px' }}>
             <input
               type="text"
               value={newTaskText}
@@ -529,7 +534,8 @@ function Demo() {
               onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
               placeholder="Add a new task..."
               style={{
-                flex: 1,
+                flex: '1 1 100%',
+                minWidth: '200px',
                 padding: '10px 14px',
                 border: '2px solid #e0e0e0',
                 borderRadius: '8px',
@@ -541,6 +547,8 @@ function Demo() {
               value={newTaskPriority}
               onChange={(e) => setNewTaskPriority(e.target.value as 'low' | 'medium' | 'high')}
               style={{
+                flex: '1 1 auto',
+                minWidth: '100px',
                 padding: '10px 14px',
                 border: '2px solid #e0e0e0',
                 borderRadius: '8px',
@@ -557,6 +565,8 @@ function Demo() {
             <button
               onClick={handleAddTodo}
               style={{
+                flex: '1 1 auto',
+                minWidth: '100px',
                 padding: '10px 20px',
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 color: 'white',
