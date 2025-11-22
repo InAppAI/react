@@ -6,7 +6,8 @@ The InAppAI React component is fully customizable to match your app's branding a
 
 ```tsx
 <InAppAI
-  endpoint="http://localhost:3001"
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
   position="bottom-right"
   theme="light"
 />
@@ -16,7 +17,8 @@ The InAppAI React component is fully customizable to match your app's branding a
 
 ```tsx
 <InAppAI
-  endpoint="http://localhost:3001"
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
   position="bottom-right"
   theme="light"
   customStyles={{
@@ -209,6 +211,8 @@ const getCustomStyles = () => {
 };
 
 <InAppAI
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
   customStyles={getCustomStyles()}
   // ...
 />

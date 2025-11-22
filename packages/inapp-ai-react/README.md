@@ -17,7 +17,8 @@ import '@inappai/react/styles.css';
 function App() {
   return (
     <InAppAI
-      endpoint="https://api.inappai.com/api/{subscriptionId}"
+      endpoint="https://api.inappai.com/api"
+      subscriptionId="your-subscription-id"
       position="bottom-right"
       theme="light"
     />

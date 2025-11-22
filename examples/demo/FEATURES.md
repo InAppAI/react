@@ -97,13 +97,17 @@
 
 ### Easy to Use
 ```tsx
-<InAppAI endpoint="http://localhost:3001" />
+<InAppAI
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
+/>
 ```
 
 ### Customizable
 ```tsx
 <InAppAI
-  endpoint="http://localhost:3001"
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
   position="bottom-right"
   theme="dark"
 />
@@ -125,10 +129,12 @@
 
 ### API Interface
 ```typescript
-POST /chat
+POST /{subscriptionId}/chat
 {
   "message": string,
-  "conversationId": string
+  "conversationId": string,
+  "context": object,      // optional
+  "tools": array          // optional
 }
 
 Response:
@@ -138,7 +144,8 @@ Response:
     "promptTokens": number,
     "completionTokens": number,
     "totalTokens": number
-  }
+  },
+  "toolCalls": array      // if tools were invoked
 }
 ```
 
@@ -182,12 +189,12 @@ Potential improvements:
 - [ ] Multi-language support
 - [ ] Conversation export
 - [ ] Custom avatars
-- [ ] Markdown rendering
-- [ ] Code syntax highlighting
+- [x] Markdown rendering (implemented)
+- [x] Code syntax highlighting (implemented)
 - [ ] Image generation
 - [ ] Streaming responses
-- [ ] Local storage persistence
-- [ ] Multiple conversation threads
+- [x] Local storage persistence (implemented)
+- [x] Multiple conversation threads (implemented)
 - [ ] User authentication
 - [ ] Rate limiting
 - [ ] Analytics integration

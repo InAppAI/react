@@ -4,60 +4,71 @@ A beautiful React application demonstrating the InAppAI embedded AI assistant co
 
 ## Features
 
-- 🎨 **Beautiful UI** - Modern, responsive design with light/dark themes
-- 💬 **AI Chat Widget** - Floating AI assistant button with chat interface
-- 🎯 **Configurable** - Position and theme customization
-- ⚡ **Real-time** - Powered by OpenAI GPT-3.5-turbo
+- 🎨 **Beautiful UI** - Modern, responsive design with multiple themes
+- 💬 **AI Chat Widget** - Floating AI assistant with chat interface
+- 🎯 **Configurable** - Position, theme, and style customization
+- ⚡ **Real-time** - Powered by your configured LLM provider
 - 📝 **Todo App** - Functional demo app with AI assistance
 - 🔌 **Easy Integration** - Drop-in component for any React app
+- 🛠️ **Function Calling** - AI can interact with your app via tools
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- OpenAI API key (set in `examples/backend/.env`)
-- Backend server running (see below)
+- An InAppAI subscription ID
+- Backend server running (Cloud Run or local)
 
 ### Installation
 
 ```bash
-# From the react-demo directory
+# From the demo directory
+cd react/examples/demo
 npm install
+```
+
+### Configuration
+
+Create a `.env` file based on `.env.example`:
+
+```bash
+# Your InAppAI subscription ID
+VITE_SUBSCRIPTION_ID=your_subscription_id_here
+
+# API Base URL (includes /api path)
+VITE_API_BASE_URL=http://localhost:8081/api
 ```
 
 ### Running the Demo
 
-**Terminal 1: Start the OpenAI backend**
 ```bash
-# From examples/backend directory
-npm run start:openai
-```
-
-**Terminal 2: Start the React app**
-```bash
-# From react-demo directory
+# Start the React app
 npm run dev
 ```
 
 The app will open at [http://localhost:5173](http://localhost:5173)
 
+> **Note**: Make sure your backend (Cloud Run) is running and accessible at the configured `VITE_API_BASE_URL`.
+
 ## Project Structure
 
 ```
-react-demo/
+demo/
 ├── src/
 │   ├── components/
-│   │   ├── InAppAI.tsx       # Main AI component
-│   │   └── InAppAI.css        # Component styles
-│   ├── App.tsx                # Demo application
-│   ├── App.css                # App styles
-│   ├── main.tsx               # Entry point
-│   └── index.css              # Global styles
-├── index.html                 # HTML template
-├── package.json               # Dependencies
-├── tsconfig.json              # TypeScript config
-└── vite.config.ts             # Vite config
+│   │   ├── InAppAI-Enhanced.tsx  # Demo AI component
+│   │   └── InAppAI-Enhanced.css  # Component styles
+│   ├── contexts/                  # React contexts
+│   ├── hooks/                     # Custom hooks
+│   ├── pages/                     # Demo pages
+│   ├── tools/                     # AI tool definitions
+│   ├── Router.tsx                 # App router
+│   └── main.tsx                   # Entry point
+├── .env.example                   # Environment template
+├── package.json                   # Dependencies
+├── tsconfig.json                  # TypeScript config
+└── vite.config.ts                 # Vite config
 ```
 
 ## Using the InAppAI Component
@@ -65,7 +76,8 @@ react-demo/
 ### Basic Usage
 
 ```tsx
-import { InAppAI } from './components/InAppAI';
+import { InAppAI } from '@inappai/react';
+import '@inappai/react/styles.css';
 
 function App() {
   return (
@@ -73,7 +85,10 @@ function App() {
       <h1>My App</h1>
 
       {/* Add the AI assistant */}
-      <InAppAI endpoint="http://localhost:3001" />
+      <InAppAI
+        endpoint="https://api.inappai.com/api"
+        subscriptionId="your-subscription-id"
+      />
     </div>
   );
 }
@@ -83,9 +98,14 @@ function App() {
 
 ```tsx
 <InAppAI
-  endpoint="http://localhost:3001"
-  position="bottom-right"  // 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
-  theme="light"            // 'light' | 'dark'
+  endpoint="https://api.inappai.com/api"
+  subscriptionId="your-subscription-id"
+  position="bottom-right"
+  displayMode="popup"
+  theme="light"
+  customStyles={{
+    headerTitle: 'My AI Assistant',
+  }}
 />
 ```
 
@@ -93,27 +113,37 @@ function App() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `endpoint` | string | `"http://localhost:3001"` | Backend API endpoint |
-| `position` | string | `"bottom-right"` | Position of the AI button |
-| `theme` | string | `"light"` | Theme (light or dark) |
+| `endpoint` | string | required | Backend API base URL (e.g., `https://api.inappai.com/api`) |
+| `subscriptionId` | string | required | Your InAppAI subscription ID |
+| `position` | string | `"bottom-right"` | Button position (`bottom-right`, `bottom-left`, `top-right`, `top-left`) |
+| `displayMode` | string | `"popup"` | Display mode (`popup`, `sidebar-left`, `sidebar-right`, `panel-left`, `panel-right`) |
+| `theme` | string | `"light"` | Theme (`light`, `dark`, `professional`, `playful`, `minimal`, `ocean`, `sunset`) |
+| `context` | object/function | - | Context data passed to AI |
+| `tools` | array | `[]` | Tool definitions for function calling |
+| `customStyles` | object | `{}` | Custom styling options |
 
 ## Features in the Demo
 
-### Todo List
-- Add, complete, and delete tasks
-- Track remaining and completed items
-- Ask the AI for task suggestions!
+### Display Modes
+- **Popup**: Floating button with expandable chat window
+- **Sidebar**: Fixed sidebar on left or right
+- **Panel**: Resizable panel integrated with your layout
 
 ### AI Assistant
 - Click the floating AI button to open chat
-- Natural conversation with GPT-3.5-turbo
+- Natural conversation with your configured LLM
 - Maintains conversation history
 - Shows token usage
 - Connection status indicator
 
+### Todo Demo
+- AI-powered task management
+- Add, complete, and delete tasks via natural language
+- Demonstrates function calling capabilities
+
 ### Customization
-- Toggle between light and dark themes
-- Change AI button position
+- Multiple built-in themes
+- Custom styling via `customStyles` prop
 - Responsive design for mobile
 
 ## Development
@@ -134,22 +164,27 @@ npm run preview
 
 To add the InAppAI component to your own React app:
 
-1. **Copy the component files:**
-   - `src/components/InAppAI.tsx`
-   - `src/components/InAppAI.css`
+1. **Install the package:**
+   ```bash
+   npm install @inappai/react
+   ```
 
 2. **Import in your app:**
    ```tsx
-   import { InAppAI } from './components/InAppAI';
+   import { InAppAI } from '@inappai/react';
+   import '@inappai/react/styles.css';
    ```
 
 3. **Add to your JSX:**
    ```tsx
-   <InAppAI endpoint="YOUR_BACKEND_URL" />
+   <InAppAI
+     endpoint="https://api.inappai.com/api"
+     subscriptionId="YOUR_SUBSCRIPTION_ID"
+   />
    ```
 
-4. **Start your backend:**
-   See `examples/backend/README.md` for backend setup
+4. **Get your subscription ID:**
+   Sign up at [inappai.com](https://inappai.com) to get your subscription ID.
 
 ## Tech Stack
 
@@ -157,24 +192,33 @@ To add the InAppAI component to your own React app:
 - **TypeScript** - Type safety
 - **Vite** - Build tool and dev server
 - **CSS3** - Styling with animations
-- **OpenAI API** - AI backend
 
-## Tips
+## Architecture
 
-- The AI button appears in the corner of your screen
-- Click it to open the chat interface
-- Try asking the AI:
-  - "What can you help me with?"
-  - "Suggest some productive tasks"
-  - "Tell me a joke"
-- The AI remembers the conversation context
-- Use the Clear button to start fresh
+```
+┌─────────────────┐
+│  React App      │  <- You are here
+│  :5173          │
+└────────┬────────┘
+         │ fetch()
+         ▼
+┌─────────────────┐
+│  Cloud Run      │
+│  Backend API    │
+└────────┬────────┘
+         │ API call
+         ▼
+┌─────────────────┐
+│  LLM Provider   │
+│  (OpenAI, etc)  │
+└─────────────────┘
+```
 
 ## Troubleshooting
 
 ### AI button not responding
-- Check that the backend is running on port 3001
-- Verify your OpenAI API key is set in `examples/backend/.env`
+- Check that the backend is running and accessible
+- Verify your subscription ID is correct
 - Check browser console for errors
 
 ### Connection failed
@@ -183,9 +227,8 @@ To add the InAppAI component to your own React app:
 - Check network tab for failed requests
 
 ### Styles not loading
-- Clear browser cache
-- Check that CSS files are imported
-- Verify Vite is bundling styles correctly
+- Make sure to import `@inappai/react/styles.css`
+- Clear browser cache and reload
 
 ## License
 
@@ -195,5 +238,4 @@ MIT
 
 For issues or questions:
 - Check the main InAppAI documentation
-- Review the backend integration guide
 - Open an issue on GitHub

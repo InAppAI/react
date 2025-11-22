@@ -5,64 +5,68 @@ Get the React demo running in 3 minutes!
 ## Prerequisites
 
 - Node.js 18+ installed
-- OpenAI API key
+- An InAppAI subscription ID
+- Backend API running (Cloud Run)
 
-## Step 1: Set up the Backend
+## Step 1: Configure Environment
 
 ```bash
-# Navigate to backend folder
-cd examples/backend
+# Navigate to demo folder
+cd react/examples/demo
 
-# Install dependencies (if not already done)
-npm install
+# Copy environment template
+cp .env.example .env
 
-# Add your OpenAI API key to .env file
-echo "OPENAI_API_KEY=your-key-here" >> .env
-
-# Start the backend server
-npm run start:openai
+# Edit .env with your values
 ```
 
-The backend will start on [http://localhost:3001](http://localhost:3001)
-
-## Step 2: Start the React App
-
-Open a **new terminal** window:
+Update your `.env` file:
 
 ```bash
-# Navigate to react-demo folder
-cd examples/react-demo
+# Your InAppAI subscription ID
+VITE_SUBSCRIPTION_ID=your_subscription_id_here
 
-# Install dependencies (if not already done)
+# API Base URL
+VITE_API_BASE_URL=http://localhost:8081/api
+```
+
+## Step 2: Install Dependencies
+
+```bash
 npm install
+```
 
-# Start the development server
+## Step 3: Start the React App
+
+```bash
 npm run dev
 ```
 
 The app will start on [http://localhost:5173](http://localhost:5173) and should open automatically in your browser.
 
-## Step 3: Try the AI Assistant!
+> **Note**: Ensure your backend is running at the configured `VITE_API_BASE_URL`.
 
-1. You should see a purple floating button in the bottom-right corner
+## Step 4: Try the AI Assistant!
+
+1. You should see a floating button in the bottom-right corner
 2. Click the button to open the AI chat interface
 3. Type a message and press Enter
-4. The AI will respond using OpenAI GPT-3.5-turbo!
+4. The AI will respond!
 
 ## What You'll See
 
-- **Todo List**: A functional task manager
 - **AI Button**: Floating in the corner (customizable position)
 - **Chat Interface**: Opens when you click the AI button
-- **Real AI Responses**: Powered by OpenAI
-- **Theme Toggle**: Switch between light and dark modes
+- **Real AI Responses**: Powered by your configured LLM
+- **Theme Toggle**: Switch between multiple themes
+- **Display Modes**: Try popup, sidebar, or panel modes
 
 ## Troubleshooting
 
 ### "Cannot connect to backend"
-- Make sure the backend server is running on port 3001
-- Check that your OpenAI API key is set correctly
-- Verify no firewall is blocking localhost connections
+- Make sure the backend server is running
+- Check that your subscription ID is set correctly in `.env`
+- Verify the `VITE_API_BASE_URL` is correct
 
 ### "AI button doesn't appear"
 - Check browser console for errors (F12)
@@ -70,38 +74,31 @@ The app will start on [http://localhost:5173](http://localhost:5173) and should 
 - Make sure the React app compiled without errors
 
 ### Port already in use
-- **3001 in use**: Another service is using the backend port
-- **5173 in use**: Change the port in `vite.config.ts`
+- **5173 in use**: Vite will automatically try the next available port
 
 ## Quick Commands
 
 ```bash
-# Backend
-cd examples/backend && npm run start:openai
+# Install dependencies
+npm install
 
-# React App
-cd examples/react-demo && npm run dev
+# Start development server
+npm run dev
 
-# Both at once (in two terminals)
-Terminal 1: cd examples/backend && npm run start:openai
-Terminal 2: cd examples/react-demo && npm run dev
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
 ## What to Try
 
 Ask the AI:
 - "What can you help me with?"
-- "Suggest 5 productive tasks for my todo list"
-- "Explain how React works"
+- "Add a task to buy groceries" (on the Todo Demo page)
+- "What themes are available?"
 - "Tell me a joke about programming"
-- "What's the weather like?" (will explain it can't access real-time data)
-
-## Next Steps
-
-- **Customize**: Change the AI button position and theme
-- **Integrate**: Copy the InAppAI component to your own project
-- **Explore**: Check out the component code in `src/components/InAppAI.tsx`
-- **Build**: Run `npm run build` to create a production build
 
 ## Architecture
 
@@ -113,21 +110,37 @@ Ask the AI:
          │ fetch()
          ▼
 ┌─────────────────┐
-│  Backend        │
-│  Express :3001  │
+│  Cloud Run API  │
+│  /api/{subId}/* │
 └────────┬────────┘
          │ API call
          ▼
 ┌─────────────────┐
-│  OpenAI API     │
-│  GPT-3.5-turbo  │
+│  LLM Provider   │
+│  (OpenAI, etc)  │
 └─────────────────┘
 ```
+
+## API Endpoints Used
+
+The demo uses these endpoints:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/{subscriptionId}/health` | GET | Health check |
+| `/{subscriptionId}/chat` | POST | Send chat message |
+
+## Next Steps
+
+- **Customize**: Change the AI button position and theme
+- **Integrate**: Use the `@inappai/react` package in your own project
+- **Explore**: Check out the component code in `src/components/`
+- **Build**: Run `npm run build` to create a production build
 
 ## Support
 
 - Read the full [README.md](README.md)
-- Check the [backend integration guide](../backend/README.md)
+- Check the [CUSTOMIZATION.md](CUSTOMIZATION.md) guide
 - Review the component source code
 
 Happy coding! 🚀
