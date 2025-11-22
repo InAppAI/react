@@ -55,6 +55,7 @@ export interface Tool {
 
 export interface InAppAIProps {
   endpoint: string;
+  subscriptionId: string;
   position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
   displayMode?: 'popup' | 'sidebar-left' | 'sidebar-right' | 'panel-left' | 'panel-right';
   defaultFolded?: boolean;

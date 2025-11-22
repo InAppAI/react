@@ -199,6 +199,8 @@
   font-size: 0.9rem;
   line-height: 1.6;
   position: relative;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .code-language {

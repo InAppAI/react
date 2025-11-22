@@ -815,8 +815,8 @@ Now users can ask:
 5. Check browser console for detailed errors
 
 \`\`\`typescript
-// Test connection
-fetch('http://localhost:3001/health')
+// Test connection (replace YOUR_SUBSCRIPTION_ID with your actual subscription ID)
+fetch('http://localhost:3001/api/YOUR_SUBSCRIPTION_ID/health')
   .then(r => r.json())
   .then(console.log)
   .catch(console.error);

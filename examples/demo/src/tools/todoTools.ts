@@ -6,7 +6,7 @@
 import { Tool } from 'inapp-ai-react';
 
 export interface Todo {
-  id: number;
+  id: string | number;
   text: string;
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
@@ -146,3 +146,98 @@ IMPORTANT: The taskId MUST come from context.todos - do NOT make up an ID!`,
     },
   ];
 }
+
+// Alternative function signature for functional handlers
+export function todoTools(
+  todos: Todo[],
+  addTodoHandler: (text: string, priority: 'low' | 'medium' | 'high') => any,
+  completeTodoHandler: (identifier: string) => void,
+  deleteTodoHandler: (id: string) => void,
+  updatePriorityHandler: (id: string, priority: 'low' | 'medium' | 'high') => void
+): Tool[] {
+  return [
+    {
+      name: 'addTodo',
+      description: 'Add a new task to the todo list. ONLY use this when the user explicitly asks to add/create a NEW task.',
+      parameters: {
+        type: 'object',
+        properties: {
+          task: {
+            type: 'string',
+            description: 'The task to add',
+          },
+          priority: {
+            type: 'string',
+            enum: ['low', 'medium', 'high'],
+            description: 'Priority level of the task (defaults to medium)',
+          },
+        },
+        required: ['task'],
+      },
+      handler: async (params: { task: string; priority?: 'low' | 'medium' | 'high' }) => {
+        const result = addTodoHandler(params.task, params.priority || 'medium');
+        return { success: true, message: `Added task: ${params.task}`, todo: result };
+      },
+    },
+    {
+      name: 'completeTodo',
+      description: 'Mark a todo as completed when the user indicates they finished a task. You can use the task ID or keywords from the task text. Example: "I wrote the documentation" should complete the "Write documentation" task. Check context.todos for available tasks.',
+      parameters: {
+        type: 'object',
+        properties: {
+          identifier: {
+            type: 'string',
+            description: 'Task ID or keyword from the task text to identify which task to complete',
+          },
+        },
+        required: ['identifier'],
+      },
+      handler: async (params: { identifier: string }) => {
+        completeTodoHandler(params.identifier);
+        return { success: true, message: `Completed task matching: ${params.identifier}` };
+      },
+    },
+    {
+      name: 'deleteTodo',
+      description: 'Delete a task from the todo list. Provide the task ID.',
+      parameters: {
+        type: 'object',
+        properties: {
+          taskId: {
+            type: 'string',
+            description: 'The ID of the task to delete',
+          },
+        },
+        required: ['taskId'],
+      },
+      handler: async (params: { taskId: string }) => {
+        deleteTodoHandler(params.taskId);
+        return { success: true, message: `Deleted task` };
+      },
+    },
+    {
+      name: 'updateTodoPriority',
+      description: 'Update the priority of an existing task. Use this when the user indicates a task is important/urgent (high priority), or can wait/is low priority. If the user just added a task and immediately says "it\'s important" or "it\'s urgent", update the most recently added task to high priority. Check context.todos to find the task ID.',
+      parameters: {
+        type: 'object',
+        properties: {
+          taskId: {
+            type: 'string',
+            description: 'The ID of the task to update',
+          },
+          priority: {
+            type: 'string',
+            enum: ['low', 'medium', 'high'],
+            description: 'The new priority level: high for important/urgent tasks, medium for normal tasks, low for tasks that can wait',
+          },
+        },
+        required: ['taskId', 'priority'],
+      },
+      handler: async (params: { taskId: string; priority: 'low' | 'medium' | 'high' }) => {
+        updatePriorityHandler(params.taskId, params.priority);
+        return { success: true, message: `Updated priority to ${params.priority}` };
+      },
+    },
+  ];
+}
+

@@ -74,6 +74,7 @@ interface Tool {
 
 interface InAppAIProps {
   endpoint: string;
+  subscriptionId: string;
   position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
   displayMode?: 'popup' | 'sidebar-left' | 'sidebar-right' | 'panel-left' | 'panel-right';
   defaultFolded?: boolean;
@@ -81,6 +82,7 @@ interface InAppAIProps {
   context?: Record<string, any> | (() => Record<string, any>); // Allow function for fresh context
   customStyles?: CustomStyles;
   tools?: Tool[];
+  conversationId?: string; // Optional conversation ID for persistence across pages
   // Panel-specific props
   panelMinWidth?: string;
   panelMaxWidth?: string;
@@ -286,6 +288,7 @@ function CodeBlock({ inline, className, children, ...props }: CodeBlockProps) {
 
 export function InAppAI({
   endpoint = 'http://localhost:3001',
+  subscriptionId,
   position = 'bottom-right',
   displayMode = 'popup',
   defaultFolded = false,
@@ -293,6 +296,7 @@ export function InAppAI({
   context,
   customStyles = {},
   tools = [],
+  conversationId: propConversationId,
   panelMinWidth = '20%',
   panelMaxWidth = '33.33%',
   panelDefaultWidth = '25%',
@@ -300,7 +304,25 @@ export function InAppAI({
 }: InAppAIProps) {
   const [isOpen, setIsOpen] = useState(displayMode.startsWith('sidebar') || displayMode.startsWith('panel'));
   const [isFolded, setIsFolded] = useState(defaultFolded && (displayMode.startsWith('sidebar') || displayMode.startsWith('panel')));
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load messages from localStorage on mount
+    if (propConversationId) {
+      try {
+        const stored = localStorage.getItem(`inappai-messages-${propConversationId}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          // Convert timestamp strings back to Date objects
+          return parsed.map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load messages from localStorage:', error);
+      }
+    }
+    return [];
+  });
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -308,7 +330,7 @@ export function InAppAI({
   const [panelWidth, setPanelWidth] = useState(panelDefaultWidth);
   const [isResizing, setIsResizing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const conversationId = useRef(`react-demo-${Date.now()}`);
+  const conversationId = useRef(propConversationId || `react-demo-${Date.now()}`);
   const resizeRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -325,6 +347,17 @@ export function InAppAI({
       setIsOpen(true);
     }
   }, [isSidebar, isPanel]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (propConversationId && messages.length > 0) {
+      try {
+        localStorage.setItem(`inappai-messages-${propConversationId}`, JSON.stringify(messages));
+      } catch (error) {
+        console.error('Failed to save messages to localStorage:', error);
+      }
+    }
+  }, [messages, propConversationId]);
 
   // Panel resize handlers
   useEffect(() => {
@@ -377,7 +410,7 @@ export function InAppAI({
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        const response = await fetch(`${endpoint}/health`);
+        const response = await fetch(`${endpoint}/${subscriptionId}/health`);
         if (response.ok) {
           setIsConnected(true);
           setError(null);
@@ -393,7 +426,7 @@ export function InAppAI({
     checkConnection();
     const interval = setInterval(checkConnection, 30000); // Check every 30s
     return () => clearInterval(interval);
-  }, [endpoint]);
+  }, [endpoint, subscriptionId]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -441,7 +474,7 @@ export function InAppAI({
         },
       }));
 
-      const response = await fetch(`${endpoint}/chat`, {
+      const response = await fetch(`${endpoint}/${subscriptionId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -496,7 +529,7 @@ export function InAppAI({
         // IMPORTANT: Get fresh context after tool execution
         // Tool handlers may have updated state (e.g., added/completed todos)
         // By calling getContext() again, we ensure the AI sees the updated state
-        const followUpResponse = await fetch(`${endpoint}/chat`, {
+        const followUpResponse = await fetch(`${endpoint}/${subscriptionId}/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -551,6 +584,14 @@ export function InAppAI({
   const clearMessages = () => {
     setMessages([]);
     conversationId.current = `react-demo-${Date.now()}`;
+    // Clear from localStorage as well
+    if (propConversationId) {
+      try {
+        localStorage.removeItem(`inappai-messages-${propConversationId}`);
+      } catch (error) {
+        console.error('Failed to clear messages from localStorage:', error);
+      }
+    }
   };
 
   const toggleFolded = () => {

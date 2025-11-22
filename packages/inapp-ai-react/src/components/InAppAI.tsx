@@ -216,6 +216,7 @@ function CodeBlock({ inline, className, children, ...props }: CodeBlockProps) {
 
 export function InAppAI({
   endpoint = 'http://localhost:3001',
+  subscriptionId,
   position = 'bottom-right',
   displayMode = 'popup',
   defaultFolded = false,
@@ -307,7 +308,7 @@ export function InAppAI({
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        const response = await fetch(`${endpoint}/health`);
+        const response = await fetch(`${endpoint}/${subscriptionId}/health`);
         if (response.ok) {
           setIsConnected(true);
           setError(null);
@@ -323,7 +324,7 @@ export function InAppAI({
     checkConnection();
     const interval = setInterval(checkConnection, 30000); // Check every 30s
     return () => clearInterval(interval);
-  }, [endpoint]);
+  }, [endpoint, subscriptionId]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -371,7 +372,7 @@ export function InAppAI({
         },
       }));
 
-      const response = await fetch(`${endpoint}/chat`, {
+      const response = await fetch(`${endpoint}/${subscriptionId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -426,7 +427,7 @@ export function InAppAI({
         // IMPORTANT: Get fresh context after tool execution
         // Tool handlers may have updated state (e.g., added/completed todos)
         // By calling getContext() again, we ensure the AI sees the updated state
-        const followUpResponse = await fetch(`${endpoint}/chat`, {
+        const followUpResponse = await fetch(`${endpoint}/${subscriptionId}/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
