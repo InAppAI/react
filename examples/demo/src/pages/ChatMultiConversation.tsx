@@ -43,6 +43,7 @@ function ChatMultiConversation() {
     if (conversations.length === 0) {
       createConversation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSend = async () => {

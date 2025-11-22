@@ -90,6 +90,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTodos() {
   const context = useContext(TodoContext);
   if (context === undefined) {

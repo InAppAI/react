@@ -93,6 +93,7 @@ export function PreferenceProvider({ children }: PreferenceProviderProps) {
 }
 
 // Custom hook to use preferences
+// eslint-disable-next-line react-refresh/only-export-components
 export function usePreferences(): PreferenceContextValue {
   const context = useContext(PreferenceContext);
   if (context === undefined) {
@@ -102,6 +103,7 @@ export function usePreferences(): PreferenceContextValue {
 }
 
 // Theme metadata for UI display
+// eslint-disable-next-line react-refresh/only-export-components
 export const THEME_METADATA: Record<Theme, { name: string; description: string; colors: string[] }> = {
   light: {
     name: 'Light',
@@ -141,6 +143,7 @@ export const THEME_METADATA: Record<Theme, { name: string; description: string; 
 };
 
 // Display mode metadata for UI display
+// eslint-disable-next-line react-refresh/only-export-components
 export const DISPLAY_MODE_METADATA: Record<DisplayMode, { name: string; description: string; icon: string }> = {
   popup: {
     name: 'Popup',
