@@ -1,0 +1,39 @@
+{
+  "name": "inapp-ai-react-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "InAppAI React Components - Open Source AI Chat Component for React",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present",
+    "build:package": "npm run build --workspace=packages/inappai-react",
+    "dev:demo": "npm run dev --workspace=examples/demo"
+  },
+  "keywords": [
+    "ai",
+    "react",
+    "chatbot",
+    "assistant",
+    "openai",
+    "anthropic"
+  ],
+  "author": "InAppAI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/InAppAI/react.git"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "typescript": "^5.9.3"
+  }
+}
