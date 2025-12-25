@@ -1,0 +1,44 @@
+{
+  "name": "inapp-ai-react-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:prod": "npm run use-npm && vite build",
+    "build:check": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "use-npm": "node scripts/use-npm-package.js",
+    "use-local": "node scripts/use-local-package.js"
+  },
+  "dependencies": {
+    "@inappai/react": "*",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.9.5",
+    "react-syntax-highlighter": "^16.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^16.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1",
+    "vite": "^6.2.7"
+  },
+  "overrides": {
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  }
+}

@@ -1,0 +1,254 @@
+/* InAppAI Theme System - CSS Custom Properties */
+
+/* =====================================================
+   BASE THEME VARIABLES
+   ===================================================== */
+
+:root {
+  /* Primary Colors */
+  --inapp-ai-primary: #667eea;
+  --inapp-ai-primary-dark: #764ba2;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Background Colors */
+  --inapp-ai-bg-primary: #ffffff;
+  --inapp-ai-bg-secondary: #f8f9fa;
+  --inapp-ai-bg-tertiary: #e9ecef;
+
+  /* Text Colors */
+  --inapp-ai-text-primary: #333333;
+  --inapp-ai-text-secondary: #666666;
+  --inapp-ai-text-tertiary: #999999;
+  --inapp-ai-text-inverse: #ffffff;
+
+  /* Border Colors */
+  --inapp-ai-border-light: #e0e0e0;
+  --inapp-ai-border-medium: #cccccc;
+  --inapp-ai-border-dark: #999999;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: #667eea;
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #f0f2f5;
+  --inapp-ai-assistant-text: #333333;
+
+  /* Input Colors */
+  --inapp-ai-input-bg: #ffffff;
+  --inapp-ai-input-border: #e0e0e0;
+  --inapp-ai-input-text: #333333;
+  --inapp-ai-input-placeholder: #999999;
+
+  /* Button Colors */
+  --inapp-ai-button-bg: var(--inapp-ai-primary-gradient);
+  --inapp-ai-button-text: #ffffff;
+  --inapp-ai-button-hover-scale: 1.1;
+
+  /* Shadow */
+  --inapp-ai-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --inapp-ai-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --inapp-ai-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+  /* Borders & Radius */
+  --inapp-ai-border-radius: 12px;
+  --inapp-ai-border-radius-sm: 8px;
+  --inapp-ai-border-radius-lg: 16px;
+
+  /* Transitions */
+  --inapp-ai-transition: all 0.3s ease;
+  --inapp-ai-transition-fast: all 0.15s ease;
+}
+
+/* =====================================================
+   DARK THEME
+   ===================================================== */
+
+.inapp-ai-theme-dark {
+  /* Background Colors */
+  --inapp-ai-bg-primary: #1a1a1a;
+  --inapp-ai-bg-secondary: #2d2d2d;
+  --inapp-ai-bg-tertiary: #404040;
+
+  /* Text Colors */
+  --inapp-ai-text-primary: #ffffff;
+  --inapp-ai-text-secondary: #cccccc;
+  --inapp-ai-text-tertiary: #999999;
+
+  /* Border Colors */
+  --inapp-ai-border-light: #404040;
+  --inapp-ai-border-medium: #555555;
+  --inapp-ai-border-dark: #666666;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: #667eea;
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #2d2d2d;
+  --inapp-ai-assistant-text: #ffffff;
+
+  /* Input Colors */
+  --inapp-ai-input-bg: #2d2d2d;
+  --inapp-ai-input-border: #404040;
+  --inapp-ai-input-text: #ffffff;
+  --inapp-ai-input-placeholder: #999999;
+
+  /* Shadow */
+  --inapp-ai-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --inapp-ai-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --inapp-ai-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* =====================================================
+   PROFESSIONAL THEME
+   ===================================================== */
+
+.inapp-ai-theme-professional {
+  /* Primary Colors - Corporate Blue */
+  --inapp-ai-primary: #0052cc;
+  --inapp-ai-primary-dark: #003d99;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #0052cc 0%, #003d99 100%);
+
+  /* Background Colors - Clean whites and grays */
+  --inapp-ai-bg-primary: #ffffff;
+  --inapp-ai-bg-secondary: #f7f8f9;
+  --inapp-ai-bg-tertiary: #ebecf0;
+
+  /* Text Colors - Professional gray tones */
+  --inapp-ai-text-primary: #172b4d;
+  --inapp-ai-text-secondary: #5e6c84;
+  --inapp-ai-text-tertiary: #8993a4;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: #0052cc;
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #f7f8f9;
+  --inapp-ai-assistant-text: #172b4d;
+
+  /* Borders */
+  --inapp-ai-border-light: #dfe1e6;
+  --inapp-ai-border-medium: #c1c7d0;
+  --inapp-ai-border-radius: 8px;
+}
+
+/* =====================================================
+   PLAYFUL THEME
+   ===================================================== */
+
+.inapp-ai-theme-playful {
+  /* Primary Colors - Vibrant gradient */
+  --inapp-ai-primary: #ff6b6b;
+  --inapp-ai-primary-dark: #ee5a6f;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #f06595 50%, #cc5de8 100%);
+
+  /* Background Colors - Soft pastels */
+  --inapp-ai-bg-primary: #fff5f7;
+  --inapp-ai-bg-secondary: #ffe3e3;
+  --inapp-ai-bg-tertiary: #ffd4e5;
+
+  /* Text Colors - Warm tones */
+  --inapp-ai-text-primary: #2d0b3d;
+  --inapp-ai-text-secondary: #5a1e72;
+  --inapp-ai-text-tertiary: #8b4896;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: linear-gradient(135deg, #ff6b6b 0%, #f06595 100%);
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #ffe3e3;
+  --inapp-ai-assistant-text: #2d0b3d;
+
+  /* Borders - Softer, rounder */
+  --inapp-ai-border-radius: 20px;
+  --inapp-ai-border-radius-lg: 24px;
+  --inapp-ai-border-light: #ffc6d9;
+}
+
+/* =====================================================
+   MINIMAL THEME
+   ===================================================== */
+
+.inapp-ai-theme-minimal {
+  /* Primary Colors - Monochrome */
+  --inapp-ai-primary: #000000;
+  --inapp-ai-primary-dark: #1a1a1a;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #000000 0%, #333333 100%);
+
+  /* Background Colors - Pure whites and grays */
+  --inapp-ai-bg-primary: #ffffff;
+  --inapp-ai-bg-secondary: #fafafa;
+  --inapp-ai-bg-tertiary: #f5f5f5;
+
+  /* Text Colors - Black and grays */
+  --inapp-ai-text-primary: #000000;
+  --inapp-ai-text-secondary: #333333;
+  --inapp-ai-text-tertiary: #666666;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: #000000;
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #fafafa;
+  --inapp-ai-assistant-text: #000000;
+
+  /* Borders - Sharp, clean */
+  --inapp-ai-border-light: #e0e0e0;
+  --inapp-ai-border-medium: #cccccc;
+  --inapp-ai-border-radius: 4px;
+  --inapp-ai-border-radius-sm: 2px;
+  --inapp-ai-border-radius-lg: 6px;
+
+  /* Shadows - Subtle */
+  --inapp-ai-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --inapp-ai-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --inapp-ai-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* =====================================================
+   OCEAN THEME
+   ===================================================== */
+
+.inapp-ai-theme-ocean {
+  /* Primary Colors - Deep ocean blues */
+  --inapp-ai-primary: #0077be;
+  --inapp-ai-primary-dark: #005a8d;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #0077be 0%, #0096d6 100%);
+
+  /* Background Colors - Water-inspired */
+  --inapp-ai-bg-primary: #f0f8ff;
+  --inapp-ai-bg-secondary: #e6f3ff;
+  --inapp-ai-bg-tertiary: #cce7ff;
+
+  /* Text Colors */
+  --inapp-ai-text-primary: #003d5c;
+  --inapp-ai-text-secondary: #005a8d;
+  --inapp-ai-text-tertiary: #0077be;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: #0077be;
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #e6f3ff;
+  --inapp-ai-assistant-text: #003d5c;
+}
+
+/* =====================================================
+   SUNSET THEME
+   ===================================================== */
+
+.inapp-ai-theme-sunset {
+  /* Primary Colors - Warm sunset colors */
+  --inapp-ai-primary: #ff6b35;
+  --inapp-ai-primary-dark: #f7931e;
+  --inapp-ai-primary-gradient: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffc947 100%);
+
+  /* Background Colors - Warm tones */
+  --inapp-ai-bg-primary: #fff8f3;
+  --inapp-ai-bg-secondary: #ffe8d6;
+  --inapp-ai-bg-tertiary: #ffd4b8;
+
+  /* Text Colors */
+  --inapp-ai-text-primary: #5c2400;
+  --inapp-ai-text-secondary: #8b3a00;
+  --inapp-ai-text-tertiary: #b85000;
+
+  /* Message Colors */
+  --inapp-ai-user-bg: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  --inapp-ai-user-text: #ffffff;
+  --inapp-ai-assistant-bg: #ffe8d6;
+  --inapp-ai-assistant-text: #5c2400;
+}

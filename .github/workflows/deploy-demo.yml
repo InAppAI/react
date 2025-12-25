@@ -1,0 +1,86 @@
+name: Deploy Demo to GitHub Pages
+
+on:
+  # Only trigger when:
+  # 1. Push to main branch AND
+  # 2. Changes in examples/demo/ directory
+  push:
+    branches:
+      - main
+    paths:
+      - 'examples/demo/**'
+      - '.github/workflows/deploy-demo.yml'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Temporarily remove demo from workspace
+        run: |
+          # Remove examples/* from workspace array in root package.json
+          cat package.json | jq '.workspaces = ["packages/*"]' > package.json.tmp
+          mv package.json.tmp package.json
+
+      - name: Switch demo to use NPM package
+        working-directory: examples/demo
+        run: node scripts/use-npm-package.js
+
+      - name: Install demo dependencies from NPM
+        working-directory: examples/demo
+        run: npm install --legacy-peer-deps
+
+      - name: Build demo for production
+        working-directory: examples/demo
+        run: npm run build
+        env:
+          # Set base path for GitHub Pages
+          # Custom domain (react-demo.inappai.com): use '/'
+          # GitHub Pages subdirectory (username.github.io/react): use '/react'
+          VITE_BASE_PATH: '/'
+          # Agent configuration (set in repository secrets)
+          VITE_AGENT_ID: ${{ secrets.VITE_AGENT_ID }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'examples/demo/dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
