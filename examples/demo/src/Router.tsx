@@ -6,6 +6,8 @@ import { InAppAI, Message } from '@inappai/react';
 import Home from './pages/Home';
 import TodoDemo from './pages/TodoDemo';
 import ChatMultiConversation from './pages/ChatMultiConversation';
+import { usePageTracking } from './analytics/usePageTracking';
+import { useMessageTracking } from './analytics/useMessageTracking';
 
 // Routes that should NOT show the shared AI assistant
 // These routes have their own standalone fullscreen chat interfaces
@@ -35,6 +37,10 @@ function AppContent() {
   // Session-only message state - resets on page refresh
   // For persistence, see ChatMultiConversation.tsx or implement your own backend storage
   const [messages, setMessages] = useState<Message[]>([]);
+
+  // Analytics: track page views and chat messages
+  usePageTracking();
+  useMessageTracking(messages, location.pathname);
 
   // Check if current route should show the shared AI assistant
   const showSharedAI = !ROUTES_WITHOUT_AI.includes(location.pathname);

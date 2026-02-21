@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { todoTools, type Todo } from '../tools/todoTools';
 import type { Tool } from '@inappai/react';
+import { trackTodoAction } from '../analytics/events';
 
 interface TodoWithDate extends Todo {
   createdAt: Date;
@@ -34,6 +35,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
       createdAt: new Date(),
     };
     setTodos(prev => [...prev, newTodo]);
+    trackTodoAction('add', { priority, todo_count: todos.length + 1 });
     return newTodo;
   };
 
@@ -49,16 +51,19 @@ export function TodoProvider({ children }: { children: ReactNode }) {
         return todo;
       })
     );
+    trackTodoAction('complete');
   };
 
   const deleteTodo = (id: string | number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    trackTodoAction('delete', { todo_count: todos.length - 1 });
   };
 
   const updatePriority = (id: string | number, priority: 'low' | 'medium' | 'high') => {
     setTodos((prev) =>
       prev.map((todo) => (todo.id === id ? { ...todo, priority } : todo))
     );
+    trackTodoAction('update_priority', { priority });
   };
 
   // Create tools with current handlers

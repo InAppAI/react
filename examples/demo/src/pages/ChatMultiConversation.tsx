@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useConversationStorage, StoredConversation, Message } from '../hooks/useConversationStorage';
 import { InAppAI, Message as InAppAIMessage } from '@inappai/react';
+import { useMessageTracking } from '../analytics/useMessageTracking';
+import { trackConversationAction } from '../analytics/events';
 import './ChatMultiConversation.css';
 
 type FilterMode = 'all' | 'today' | 'week' | 'month';
@@ -27,6 +29,9 @@ function ChatMultiConversation() {
     importConversations,
   } = useConversationStorage('multi-conversation');
 
+  // Analytics: track chat messages in standalone fullscreen chat
+  useMessageTracking(messages, '/chat-multi-conversation');
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
@@ -35,6 +40,7 @@ function ChatMultiConversation() {
   useEffect(() => {
     if (conversations.length === 0) {
       createConversation();
+      trackConversationAction('create');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -67,6 +73,7 @@ function ChatMultiConversation() {
         tags: newTags,
       },
     });
+    trackConversationAction('tag');
   };
 
   const handleSetColor = (conversationId: string, color: string) => {
@@ -79,6 +86,7 @@ function ChatMultiConversation() {
         color,
       },
     });
+    trackConversationAction('color');
   };
 
   const handleExport = () => {
@@ -90,6 +98,7 @@ function ChatMultiConversation() {
     a.download = `inappai-conversations-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    trackConversationAction('export');
   };
 
   const handleImport = () => {
@@ -104,6 +113,7 @@ function ChatMultiConversation() {
       reader.onload = (e) => {
         const content = e.target?.result as string;
         importConversations(content);
+        trackConversationAction('import');
       };
       reader.readAsText(file);
     };
@@ -227,7 +237,7 @@ function ChatMultiConversation() {
           <div
             key={conv.id}
             className={`advanced-conversation-item ${activeConversation?.id === conv.id ? 'active' : ''}`}
-            onClick={() => switchConversation(conv.id)}
+            onClick={() => { switchConversation(conv.id); trackConversationAction('switch'); }}
           >
             <div className="conversation-title-row">
               <div
@@ -242,6 +252,7 @@ function ChatMultiConversation() {
                     e.stopPropagation();
                     if (confirm('Delete this conversation?')) {
                       deleteConversation(conv.id);
+                      trackConversationAction('delete');
                     }
                   }}
                   title="Delete"
@@ -350,7 +361,7 @@ function ChatMultiConversation() {
                 </div>
               </div>
               <div className="header-actions">
-                <button className="new-chat-btn" onClick={createConversation}>
+                <button className="new-chat-btn" onClick={() => { createConversation(); trackConversationAction('create'); }}>
                   + New Chat
                 </button>
                 <button
@@ -358,6 +369,7 @@ function ChatMultiConversation() {
                   onClick={() => {
                     if (confirm('Are you sure you want to delete all conversations? This cannot be undone.')) {
                       clearAllConversations();
+                      trackConversationAction('clear_all');
                     }
                   }}
                 >
@@ -385,7 +397,7 @@ function ChatMultiConversation() {
           <div className="empty-state">
             <h2>No conversation selected</h2>
             <p>Select a conversation from the sidebar or create a new one</p>
-            <button onClick={createConversation}>Create Conversation</button>
+            <button onClick={() => { createConversation(); trackConversationAction('create'); }}>Create Conversation</button>
             <Link to="/" className="back-link">← Back to Home</Link>
           </div>
         )}

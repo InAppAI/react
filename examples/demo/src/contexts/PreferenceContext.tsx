@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { trackThemeChange, trackDisplayModeChange } from '../analytics/events';
 
 // Types for theme and display mode
 export type Theme = 'light' | 'dark' | 'professional' | 'playful' | 'minimal' | 'ocean' | 'sunset';
@@ -66,11 +67,13 @@ export function PreferenceProvider({ children }: PreferenceProviderProps) {
   // Set theme
   const setTheme = (theme: Theme) => {
     setPreferences((prev) => ({ ...prev, theme }));
+    trackThemeChange(theme);
   };
 
   // Set display mode
   const setDisplayMode = (mode: DisplayMode) => {
     setPreferences((prev) => ({ ...prev, displayMode: mode }));
+    trackDisplayModeChange(mode);
   };
 
   // Reset to defaults

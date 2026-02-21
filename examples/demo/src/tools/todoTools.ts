@@ -4,6 +4,7 @@
  */
 
 import { Tool } from '@inappai/react';
+import { trackToolExecution } from '../analytics/events';
 
 export interface Todo {
   id: string | number;
@@ -176,6 +177,7 @@ export function todoTools(
       },
       handler: async (params: { task: string; priority?: 'low' | 'medium' | 'high' }) => {
         const result = addTodoHandler(params.task, params.priority || 'medium');
+        trackToolExecution('addTodo', true);
         return { success: true, message: `Added task: ${params.task}`, todo: result };
       },
     },
@@ -194,6 +196,7 @@ export function todoTools(
       },
       handler: async (params: { identifier: string }) => {
         completeTodoHandler(params.identifier);
+        trackToolExecution('completeTodo', true);
         return { success: true, message: `Completed task matching: ${params.identifier}` };
       },
     },
@@ -212,6 +215,7 @@ export function todoTools(
       },
       handler: async (params: { taskId: string }) => {
         deleteTodoHandler(params.taskId);
+        trackToolExecution('deleteTodo', true);
         return { success: true, message: `Deleted task` };
       },
     },
@@ -235,6 +239,7 @@ export function todoTools(
       },
       handler: async (params: { taskId: string; priority: 'low' | 'medium' | 'high' }) => {
         updatePriorityHandler(params.taskId, params.priority);
+        trackToolExecution('updateTodoPriority', true);
         return { success: true, message: `Updated priority to ${params.priority}` };
       },
     },
