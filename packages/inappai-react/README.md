@@ -239,6 +239,8 @@ Or use dynamic context:
 | `conversationId` | `string` | Auto-generated | Conversation identifier |
 | `authToken` | `string` | - | JWT token for authentication |
 | `tools` | `Tool[]` | `[]` | Custom tools for function calling |
+| `maxToolRounds` | `number` | `10` | Max tool execution rounds per message |
+| `authToken` | `string \| (() => string \| null)` | - | JWT token for authentication |
 
 ### Panel Props
 
@@ -249,21 +251,26 @@ Or use dynamic context:
 | `panelDefaultWidth` | `string` | `'25%'` | Initial panel width |
 | `onPanelResize` | `(width: number) => void` | - | Panel resize callback |
 
-### Event Hooks
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `onMessageSent` | `(message: Message) => void` | Called when user sends message |
-| `onMessageReceived` | `(message: Message) => void` | Called when AI responds |
-| `onError` | `(error: Error) => void` | Called on errors |
-
 ### Types
 
 ```typescript
 interface Message {
-  role: 'user' | 'assistant';
+  id: string;
+  role: 'user' | 'assistant' | 'system';
   content: string;
-  timestamp?: number;
+  timestamp?: Date;
+  usage?: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+  };
+  toolActions?: ToolAction[];
+}
+
+interface ToolAction {
+  tool: string;
+  args: Record<string, any>;
+  result: any;
 }
 
 interface Tool {

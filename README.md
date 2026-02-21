@@ -18,6 +18,7 @@
 - 🎯 **Multiple Display Modes** - Popup, Sidebar, Panel, or Embedded layouts
 - 🎨 **7 Built-in Themes** - Light, Dark, Professional, Playful, Minimal, Ocean, Sunset
 - 🔧 **Function Calling** - Let AI execute actions in your app via tools
+- 🧠 **Conversation Memory** - AI remembers previous messages and tool actions
 - 📱 **Fully Responsive** - Works perfectly on desktop, tablet, and mobile
 - 🎛️ **Controlled Mode** - Full control over message state and persistence
 - 🔒 **Secure by Default** - Origin allowlist, JWT auth, server-side API keys
