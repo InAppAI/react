@@ -1,11 +1,17 @@
 # InAppAI React
 
-> Beautiful, customizable AI chat component for React applications
+> Open-source React components for AI agents that operate your UI — not just chat
 
 [![npm version](https://img.shields.io/npm/v/@inappai/react.svg)](https://www.npmjs.com/package/@inappai/react)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**InAppAI React** is an open-source React component that lets you embed a beautiful AI chat assistant into your web application in minutes. Built for modern React applications with full TypeScript support.
+<!-- TODO: Replace with actual demo GIF once recorded (see marketing/VIRAL_MECHANICS.md) -->
+<p align="center">
+  <img src="https://inappai.com/images/demo/hero-demo.gif" alt="InAppAI Demo: AI agent operating a todo app through natural language" width="700">
+</p>
+<p align="center"><em>User says "Add three tasks" — the AI agent creates them. Not a chatbot — an agent that operates your UI.</em></p>
+
+**InAppAI React** is an open-source React component that lets you embed AI agents into your web application in minutes. Users state their intent in natural language, and the AI executes actions through your app's tools. Built for modern React applications with full TypeScript support.
 
 ## ✨ Features
 
@@ -47,6 +53,24 @@ function App() {
 ```
 
 **[📖 Read the Full Documentation →](https://www.inappai.com/docs/)**
+
+## 🎮 Demo
+
+🚀 **[Try the Live Demo](https://react-demo.inappai.com/)**
+
+The demo showcases all features with an interactive 3-step tutorial, todo app with AI tools, and ChatGPT-like multi-conversation interface.
+
+### Run Demo Locally
+
+```bash
+git clone https://github.com/InAppAI/react.git
+cd react
+npm install
+npm run build:package
+npm run dev:demo
+```
+
+Visit `http://localhost:5173` to see it in action.
 
 ## 📚 Documentation
 
@@ -95,24 +119,6 @@ Ready-to-use code examples you can copy and paste:
 - **[Custom Theme](./examples/snippets/custom-theme.tsx)** - Full customization
 - **[View All Snippets →](./examples/snippets/)**
 
-## 🎮 Demo
-
-🚀 **[Try the Live Demo](https://react-demo.inappai.com/)**
-
-The demo showcases all features with an interactive 3-step tutorial, todo app with AI tools, and ChatGPT-like multi-conversation interface.
-
-### Run Demo Locally
-
-```bash
-git clone https://github.com/InAppAI/react.git
-cd react
-npm install
-npm run build:package
-npm run dev:demo
-```
-
-Visit `http://localhost:5173` to see it in action.
-
 ## 🏗️ Project Structure
 
 ```
@@ -132,6 +138,22 @@ react/
 │   └── demo/                    # Demo app architecture & setup
 └── README.md                    # This file
 ```
+
+## 🚀 Starter Templates
+
+Get started in under 5 minutes with a clone-and-run template:
+
+| Template | Description | |
+|----------|-------------|--|
+| [Todo Starter](https://github.com/InAppAI/starter-todo) | Minimal todo app with AI agent | `git clone https://github.com/InAppAI/starter-todo.git` |
+| CRM Starter | CRM with AI-powered contact management | Coming soon |
+
+## 🌟 Built with InAppAI
+
+| Project | Description | Link |
+|---------|-------------|------|
+| Todo Demo | Official demo with AI-powered task management | [Live](https://react-demo.inappai.com) |
+| *Your project here* | *[Submit a PR](./CONTRIBUTING.md) to add your project* | |
 
 ## 🤝 Contributing
 

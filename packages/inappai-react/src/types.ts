@@ -90,4 +90,6 @@ export interface InAppAIProps {
   showHeader?: boolean;
   // Authentication - JWT token for per-user rate limiting
   authToken?: string | (() => string | null | undefined);
+  // Maximum number of tool execution rounds per message (default: 10)
+  maxToolRounds?: number;
 }

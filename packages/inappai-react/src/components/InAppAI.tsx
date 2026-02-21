@@ -229,6 +229,8 @@ export function InAppAI({
   showHeader = true,
   // Authentication
   authToken,
+  // Tool execution
+  maxToolRounds = 10,
 }: InAppAIProps) {
   // Require controlled mode - messages and onMessagesChange are required
   if (externalMessages === undefined || onMessagesChange === undefined) {
@@ -443,12 +445,22 @@ export function InAppAI({
 
       const data = await response.json();
 
-      // Check if AI returned tool calls
-      if (data.toolCalls && data.toolCalls.length > 0) {
-        // Execute tool handlers locally
+      // Iterative tool execution loop
+      // The AI may return tool calls that, once executed, lead to more tool calls.
+      // We loop until the AI returns a text-only response or we hit maxToolRounds.
+      let currentData = data;
+      let round = 0;
+
+      while (
+        currentData.toolCalls &&
+        currentData.toolCalls.length > 0 &&
+        round < maxToolRounds
+      ) {
+        round++;
+
+        // Execute all tool calls in parallel
         const results = await Promise.all(
-          data.toolCalls.map(async (toolCall: any) => {
-            // OpenAI format: {id, type, function: {name, arguments}}
+          currentData.toolCalls.map(async (toolCall: any) => {
             const toolName = toolCall.function?.name || toolCall.name;
             const toolArgs = toolCall.function?.arguments
               ? JSON.parse(toolCall.function.arguments)
@@ -468,25 +480,27 @@ export function InAppAI({
           })
         );
 
-        // Send tool results back to AI for natural language response
+        // Format tool results as text message
         const toolResultsMessage = results
-          .map((r: any, idx: any) => {
-            const toolCall = data.toolCalls[idx];
+          .map((r: any, idx: number) => {
+            const toolCall = currentData.toolCalls[idx];
             const toolName = toolCall.function?.name || toolCall.name;
             return `Tool "${toolName}" result: ${JSON.stringify(r)}`;
           })
           .join('\n');
 
-        // IMPORTANT: Get fresh context after tool execution
-        // Tool handlers may have updated state (e.g., added/completed todos)
-        // By calling getContext() again, we ensure the AI sees the updated state
+        // On last allowed round, omit tools to force a text-only response
+        const isLastAllowedRound = round >= maxToolRounds;
+
+        // Send tool results back with tools and fresh context
         const followUpResponse = await fetch(`${apiEndpoint}/${agentId}/chat`, {
           method: 'POST',
           headers: buildHeaders(),
           body: JSON.stringify({
             message: toolResultsMessage,
             conversationId,
-            context: getContext(), // Fresh context after tool execution
+            context: getContext(),
+            tools: isLastAllowedRound ? undefined : (toolDefinitions.length > 0 ? toolDefinitions : undefined),
             disableCache: false,
           }),
         });
@@ -495,28 +509,19 @@ export function InAppAI({
           throw new Error('Failed to get AI response for tool results');
         }
 
-        const followUpData = await followUpResponse.json();
-
-        const assistantMessage: Message = {
-          id: `${Date.now()}-assistant`,
-          role: 'assistant',
-          content: followUpData.message || 'I executed the tools successfully.',
-          timestamp: new Date(),
-          usage: followUpData.usage,
-        };
-
-        setMessages(prev => [...prev, assistantMessage]);
-      } else {
-        const assistantMessage: Message = {
-          id: `${Date.now()}-assistant`,
-          role: 'assistant',
-          content: data.message,
-          timestamp: new Date(),
-          usage: data.usage,
-        };
-
-        setMessages(prev => [...prev, assistantMessage]);
+        currentData = await followUpResponse.json();
       }
+
+      // Display final text response
+      const assistantMessage: Message = {
+        id: `${Date.now()}-assistant`,
+        role: 'assistant',
+        content: currentData.message || 'I executed the tools successfully.',
+        timestamp: new Date(),
+        usage: currentData.usage,
+      };
+
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (err) {
       console.error('❌ Error:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
