@@ -427,11 +427,27 @@ export function InAppAI({
         },
       }));
 
+      // Build compact conversation history with tool action context
+      const buildMessagesPayload = () => messages.map(m => {
+        const msg: { role: string; content: string } = {
+          role: m.role,
+          content: m.content,
+        };
+        if (m.toolActions && m.toolActions.length > 0) {
+          const actionsSummary = m.toolActions
+            .map(a => `${a.tool}(${JSON.stringify(a.args)}) → ${JSON.stringify(a.result)}`)
+            .join(', ');
+          msg.content += `\n\n[Tool actions: ${actionsSummary}]`;
+        }
+        return msg;
+      });
+
       const response = await fetch(`${apiEndpoint}/${agentId}/chat`, {
         method: 'POST',
         headers: buildHeaders(),
         body: JSON.stringify({
           message,
+          messages: buildMessagesPayload(),
           conversationId,
           context: getContext(),
           tools: toolDefinitions.length > 0 ? toolDefinitions : undefined,
@@ -450,6 +466,7 @@ export function InAppAI({
       // We loop until the AI returns a text-only response or we hit maxToolRounds.
       let currentData = data;
       let round = 0;
+      const allToolActions: Array<{ tool: string; args: Record<string, any>; result: any }> = [];
 
       while (
         currentData.toolCalls &&
@@ -480,6 +497,16 @@ export function InAppAI({
           })
         );
 
+        // Collect tool actions for conversation memory
+        results.forEach((result: any, idx: number) => {
+          const toolCall = currentData.toolCalls[idx];
+          const toolName = toolCall.function?.name || toolCall.name;
+          const toolArgs = toolCall.function?.arguments
+            ? JSON.parse(toolCall.function.arguments)
+            : toolCall.parameters || {};
+          allToolActions.push({ tool: toolName, args: toolArgs, result });
+        });
+
         // Format tool results with clear completion markers
         const toolResultLines = results
           .map((r: any, idx: number) => {
@@ -497,12 +524,13 @@ export function InAppAI({
         // On last allowed round, omit tools to force a text-only response
         const isLastAllowedRound = round >= maxToolRounds;
 
-        // Send tool results back with tools and fresh context
+        // Send tool results back with tools, fresh context, and conversation history
         const followUpResponse = await fetch(`${apiEndpoint}/${agentId}/chat`, {
           method: 'POST',
           headers: buildHeaders(),
           body: JSON.stringify({
             message: toolResultsMessage,
+            messages: buildMessagesPayload(),
             conversationId,
             context: getContext(),
             tools: isLastAllowedRound ? undefined : (toolDefinitions.length > 0 ? toolDefinitions : undefined),
@@ -524,6 +552,7 @@ export function InAppAI({
         content: currentData.message || 'I executed the tools successfully.',
         timestamp: new Date(),
         usage: currentData.usage,
+        toolActions: allToolActions.length > 0 ? allToolActions : undefined,
       };
 
       setMessages(prev => [...prev, assistantMessage]);

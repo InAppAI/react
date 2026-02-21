@@ -53,6 +53,13 @@ export interface Tool {
   handler: (params: any) => Promise<any> | any;
 }
 
+// Tool action record for conversation memory
+export interface ToolAction {
+  tool: string;
+  args: Record<string, any>;
+  result: any;
+}
+
 // Message type for controlled mode
 export interface Message {
   id: string;
@@ -64,6 +71,7 @@ export interface Message {
     completionTokens: number;
     totalTokens: number;
   };
+  toolActions?: ToolAction[];
 }
 
 export interface InAppAIProps {

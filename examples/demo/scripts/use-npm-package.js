@@ -15,9 +15,9 @@ const packageJsonPath = join(__dirname, '..', 'package.json');
 const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
 
 // Change from workspace ("*") to latest NPM version
-packageJson.dependencies['@inappai/react'] = '^1.1.1';
+packageJson.dependencies['@inappai/react'] = '^1.2.0';
 
 writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
 
-console.log('✅ Switched to NPM package: @inappai/react@^1.1.1');
+console.log('✅ Switched to NPM package: @inappai/react@^1.2.0');
 console.log('Run "npm install" to install from NPM registry');

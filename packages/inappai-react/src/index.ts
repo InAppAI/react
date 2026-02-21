@@ -2,6 +2,7 @@ export { InAppAI } from './components/InAppAI';
 export type {
   CustomStyles,
   Tool,
+  ToolAction,
   Message,
   InAppAIProps,
 } from './types';
