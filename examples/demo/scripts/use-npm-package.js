@@ -19,5 +19,5 @@ packageJson.dependencies['@inappai/react'] = '^1.1.1';
 
 writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
 
-console.log('✅ Switched to NPM package: @inappai/react@^1.1.0');
+console.log('✅ Switched to NPM package: @inappai/react@^1.1.1');
 console.log('Run "npm install" to install from NPM registry');
