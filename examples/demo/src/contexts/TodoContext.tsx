@@ -27,13 +27,13 @@ export function TodoProvider({ children }: { children: ReactNode }) {
 
   const addTodo = (text: string, priority: 'low' | 'medium' | 'high' = 'medium') => {
     const newTodo: TodoWithDate = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       text,
       completed: false,
       priority,
       createdAt: new Date(),
     };
-    setTodos([...todos, newTodo]);
+    setTodos(prev => [...prev, newTodo]);
     return newTodo;
   };
 

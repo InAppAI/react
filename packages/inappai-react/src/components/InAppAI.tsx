@@ -480,14 +480,19 @@ export function InAppAI({
           })
         );
 
-        // Format tool results as text message
-        const toolResultsMessage = results
+        // Format tool results with clear completion markers
+        const toolResultLines = results
           .map((r: any, idx: number) => {
             const toolCall = currentData.toolCalls[idx];
             const toolName = toolCall.function?.name || toolCall.name;
             return `Tool "${toolName}" result: ${JSON.stringify(r)}`;
           })
           .join('\n');
+
+        const toolResultsMessage = `[TOOL EXECUTION COMPLETE - Round ${round}]\n` +
+          `The following ${results.length} tool call(s) have been executed successfully. Do NOT re-execute them.\n` +
+          toolResultLines + '\n' +
+          `If all requested actions are complete, respond to the user with a summary. Only make additional tool calls if new/different actions are needed.`;
 
         // On last allowed round, omit tools to force a text-only response
         const isLastAllowedRound = round >= maxToolRounds;

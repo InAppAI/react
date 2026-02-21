@@ -15,7 +15,7 @@ const packageJsonPath = join(__dirname, '..', 'package.json');
 const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
 
 // Change from workspace ("*") to latest NPM version
-packageJson.dependencies['@inappai/react'] = '^1.1.0';
+packageJson.dependencies['@inappai/react'] = '^1.1.1';
 
 writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
 
